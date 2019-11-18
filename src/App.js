@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import ResultsDisplay from "./ResultsDisplay";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  state = {
+    response: [],
+    loading: false,
+    filter: null,
+    searchTerm: null
+  };
+
+  render() {
+    return (
+      <div>
+        <header>
+          <h1>Google Book Search</h1>
+          <div>{/* <SearchBar /> */}</div>
+          <div>{/* <FilterBar /> */}</div>
+        </header>
+        <main>
+          <section className="results-display">
+            <ResultsDisplay />
+          </section>
+        </main>
+      </div>
+    );
+  }
 }
-
-export default App;
