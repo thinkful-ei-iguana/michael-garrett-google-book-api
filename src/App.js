@@ -1,23 +1,31 @@
 import React from "react";
 import "./App.css";
+import Header from "./Header";
 import ResultsDisplay from "./ResultsDisplay";
 
 export default class App extends React.Component {
-  state = {
-    response: [],
-    loading: false,
-    filter: null,
-    searchTerm: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      response: [],
+      loading: false,
+      filter: null,
+      searchTerm: ""
+    };
+  }
+
+  handleSearch = inputSearchTerm => {
+    this.setState({
+      searchTerm: inputSearchTerm
+    });
   };
+
+  handleFilter(filterInput) {}
 
   render() {
     return (
       <div>
-        <header>
-          <h1>Google Book Search</h1>
-          <div>{/* <SearchBar /> */}</div>
-          <div>{/* <FilterBar /> */}</div>
-        </header>
+        <Header submitHandle={this.handleSearch} />
         <main>
           <section className="results-display">
             <ResultsDisplay />
