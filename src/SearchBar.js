@@ -8,7 +8,7 @@ export default function SearchBar(props) {
         props.submitHandle(event.target.title.value);
       }}
     >
-      <input type="text" placholder="title" name="title"></input>
+      <input type="text" placeholder="title" name="title"></input>
       <button type="submit">Search</button>
     </form>
   );

@@ -9,9 +9,10 @@ export default class App extends React.Component {
     this.state = {
       response: [],
       loading: false,
-      filter: null,
+      filter: "null",
       searchTerm: "",
-      error: null
+      error: null,
+      baseURL: "https://www.googleapis.com/books/v1/volumes?q="
     };
   }
 
@@ -24,30 +25,62 @@ export default class App extends React.Component {
     );
   };
 
-  getResults = () => {
-    const baseURL = "https://www.googleapis.com/books/v1/volumes?q=";
-    fetch(`${baseURL}${this.state.searchTerm}`)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Something went wrong!");
-        } else {
-          return res.json();
-        }
-      })
-      .then(data =>
-        this.setState({
-          response: data.items
-        })
-      )
-      .catch(error => this.setState({ error: error.message, loading: false }));
+  handleFilter = filterInput => {
+    this.setState(
+      {
+        filter: filterInput
+      },
+      this.getResults
+    );
   };
 
-  handleFilter = filterInput => {};
+  getResults = () => {
+    if (this.state.filter === "null") {
+      let newURL = `${this.state.baseURL}${this.state.searchTerm}`;
+      fetch(`${newURL}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Something went wrong!");
+          } else {
+            return res.json();
+          }
+        })
+        .then(data =>
+          this.setState({
+            response: data.items
+          })
+        )
+        .catch(error =>
+          this.setState({ error: error.message, loading: false })
+        );
+    } else {
+      let newURL = `${this.state.baseURL}${this.state.searchTerm}&filter=${this.state.filter}`;
+      fetch(newURL)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Something went wrong!");
+          } else {
+            return res.json();
+          }
+        })
+        .then(data =>
+          this.setState({
+            response: data.items
+          })
+        )
+        .catch(error =>
+          this.setState({ error: error.message, loading: false })
+        );
+    }
+  };
 
   render() {
     return (
       <div>
-        <Header submitHandle={this.handleSearch} />
+        <Header
+          submitHandle={this.handleSearch}
+          handleFilter={this.handleFilter}
+        />
         <main>
           <section className="results-display">
             <ResultsDisplay books={this.state.response} />

@@ -7,7 +7,7 @@ export default function Header(props) {
     <header>
       <h1>Google Book Search</h1>
       <SearchBar submitHandle={props.submitHandle} />
-      <FilterBar />
+      <FilterBar handleFilter={props.handleFilter} />
     </header>
   );
 }
