@@ -10,17 +10,39 @@ export default class App extends React.Component {
       response: [],
       loading: false,
       filter: null,
-      searchTerm: ""
+      searchTerm: "",
+      error: null
     };
   }
 
   handleSearch = inputSearchTerm => {
-    this.setState({
-      searchTerm: inputSearchTerm
-    });
+    this.setState(
+      {
+        searchTerm: inputSearchTerm
+      },
+      this.getResults
+    );
   };
 
-  handleFilter(filterInput) {}
+  getResults = () => {
+    const baseURL = "https://www.googleapis.com/books/v1/volumes?q=";
+    fetch(`${baseURL}${this.state.searchTerm}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Something went wrong!");
+        } else {
+          return res.json();
+        }
+      })
+      .then(data =>
+        this.setState({
+          response: data.items
+        })
+      )
+      .catch(error => this.setState({ error: error.message, loading: false }));
+  };
+
+  handleFilter = filterInput => {};
 
   render() {
     return (
@@ -28,7 +50,7 @@ export default class App extends React.Component {
         <Header submitHandle={this.handleSearch} />
         <main>
           <section className="results-display">
-            <ResultsDisplay />
+            <ResultsDisplay books={this.state.response} />
           </section>
         </main>
       </div>

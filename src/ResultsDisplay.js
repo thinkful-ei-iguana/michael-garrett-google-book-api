@@ -1,19 +1,21 @@
 import React from "react";
+import Result from "./Result";
 
-export default function ResultsDisplay() {
+export default function ResultsDisplay(props) {
   return (
-    <div className="Result">
-      <h3>title</h3>
-      <div className="content-box">
-        <div className="content-left">
-          <img alt="cover art"></img>
-        </div>
-        <div className="content-right">
-          <p>Author: </p>
-          <p>Price: </p>
-          <p>Description: </p>
-        </div>
-      </div>
-    </div>
+    <ul className="Results">
+      {props.books.map((book, index) => {
+        return (
+          <Result
+            key={index}
+            title={props.books[index].volumeInfo.title}
+            author={props.books[index].volumeInfo.authors[0]}
+            price={props.price}
+            coverArt={props.books[index].volumeInfo.imageLinks.thumbnail}
+            description={props.books[index].volumeInfo.description}
+          />
+        );
+      })}
+    </ul>
   );
 }
